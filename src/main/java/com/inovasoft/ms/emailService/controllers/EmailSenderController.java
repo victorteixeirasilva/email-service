@@ -6,12 +6,15 @@ import com.inovasoft.ms.emailService.core.exceptions.EmailServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.concurrent.CompletableFuture;
 
 @Tag(name = "Email Sander", description = "Gerenciamento de Envio de Emails")
 @RestController
@@ -30,13 +33,14 @@ public class EmailSenderController {
                     "Enviando um email",
             description =
                     "Retorna uma mensagem informando se o e-mail foi enviado ou não com sucesso!")
+    @Async("asyncExecutor")
     @PostMapping()
-    public ResponseEntity<String> sendEmail(@RequestBody EmailRequest request){
+    public CompletableFuture<ResponseEntity<String>> sendEmail(@RequestBody EmailRequest request){
         try {
             this.emailSanderService.sendEmail(request.to(), request.subject(), request.body());
-            return ResponseEntity.ok("email send sucessfully");
+            return CompletableFuture.completedFuture(ResponseEntity.ok("email send sucessfully"));
         } catch (EmailServiceException exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while sending email");
+            return CompletableFuture.completedFuture(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while sending email"));
         }
     }
 }
