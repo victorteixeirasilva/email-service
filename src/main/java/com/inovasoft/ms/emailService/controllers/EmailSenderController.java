@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Tag(name = "Email Sander", description = "Gerenciamento de Envio de Emails")
 @RestController
-@RequestMapping("/api/email")
+@RequestMapping("/ms/email")
 public class EmailSenderController {
 
     private final EmailSanderService emailSanderService;
