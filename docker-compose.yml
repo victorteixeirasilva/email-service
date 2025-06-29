@@ -1,0 +1,13 @@
+services:
+  email-service:
+    build:
+      context: .
+    container_name: email-service
+#    ports:
+#      - "8092:8092"
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
