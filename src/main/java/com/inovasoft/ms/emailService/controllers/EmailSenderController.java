@@ -1,5 +1,7 @@
 package com.inovasoft.ms.emailService.controllers;
 
+import com.inovasoft.ms.emailService.aplication.Auth_For_MService.TokenService;
+import com.inovasoft.ms.emailService.aplication.Auth_For_MService.dto.TokenValidateResponse;
 import com.inovasoft.ms.emailService.aplication.EmailSanderService;
 import com.inovasoft.ms.emailService.core.EmailRequest;
 import com.inovasoft.ms.emailService.core.exceptions.EmailServiceException;
@@ -8,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,6 +21,9 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/ms/email")
 public class EmailSenderController {
+
+    @Autowired
+    private TokenService tokenService;
 
     private final EmailSanderService emailSanderService;
 
@@ -36,8 +38,28 @@ public class EmailSenderController {
             description =
                     "Retorna uma mensagem informando se o e-mail foi enviado ou não com sucesso!")
     @Async("asyncExecutor")
-    @PostMapping()
-    public CompletableFuture<ResponseEntity<String>> sendEmail(@RequestBody EmailRequest request){
+    @PostMapping("/{token}")
+    public CompletableFuture<ResponseEntity<String>> sendEmail(
+            @RequestBody EmailRequest request,
+            @PathVariable String token
+    ){
+        TokenValidateResponse tokenValidateResponse = null;
+
+        try {
+            tokenValidateResponse = tokenService.validateToken(token);
+            if (tokenValidateResponse == null) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid token")) {
+                return CompletableFuture.completedFuture(ResponseEntity.status(
+                        HttpStatus.UNAUTHORIZED
+                ).build());
+            }
+        }
+
         try {
             this.emailSanderService.sendEmail(request.to(), request.subject(), request.body());
             return CompletableFuture.completedFuture(ResponseEntity.ok("email send sucessfully"));
