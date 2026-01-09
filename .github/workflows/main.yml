@@ -40,7 +40,7 @@ jobs:
 
       - name: Executar comandos na VPS
         run: |
-          TARGET_DIR="/home/root/Back-End/email-service"
+          TARGET_DIR="/home/root/Back-End"
           sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
             set -e
       
