@@ -28,12 +28,8 @@ jobs:
         run: ./mvnw clean package -DskipTests
         # run: ./mvnw clean package
 
-      # - name: Compactar pasta api
-      #   run: tar -cvf email-service.tar /
-      - name: Compactar pasta raiz do projeto (com exclusões)
-        run: |
-            tar -cvf email-service.tar . \
-              --exclude=target
+      - name: Compactar pasta api
+        run: tar -cvf email-service.tar .
 
       - name: Instalar sshpass
         run: sudo apt-get install -y sshpass
