@@ -20,11 +20,11 @@ jobs:
           java-version: '21'
 
       - name: Dar permissão ao mvnw
-        working-directory: email-service
+        # working-directory: email-service
         run: chmod +x mvnw
 
       - name: Build com Maven
-        working-directory: email-service
+        # working-directory: email-service
         run: ./mvnw clean package -DskipTests
         # run: ./mvnw clean package
 
