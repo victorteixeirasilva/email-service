@@ -29,7 +29,8 @@ jobs:
         # run: ./mvnw clean package
 
       - name: Compactar pasta api
-        run: tar -cvf email-service.tar email-service/
+        # run: tar -cvf email-service.tar email-service/
+        run: tar -cvf email-service.tar      
 
       - name: Instalar sshpass
         run: sudo apt-get install -y sshpass
