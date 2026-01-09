@@ -33,10 +33,7 @@ jobs:
       - name: Compactar pasta raiz do projeto (com exclusões)
         run: |
             tar -cvf email-service.tar . \
-              --exclude=.git \
-              --exclude=node_modules \
-              --exclude=target \
-              --exclude=.github
+              --exclude=target
 
       - name: Instalar sshpass
         run: sudo apt-get install -y sshpass
