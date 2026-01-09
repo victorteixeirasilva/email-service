@@ -45,8 +45,8 @@ jobs:
             set -e
       
             rm -rf "$TARGET_DIR/email-service"
-            mkdir -p "$TARGET_DIR"
-            tar -xvf /tmp/email-service.tar -C "$TARGET_DIR"
+            mkdir -p "$TARGET_DIR/email-service"
+            tar -xvf /tmp/email-service.tar -C "$TARGET_DIR/email-service"
             rm /tmp/email-service.tar
       
             cd "$TARGET_DIR/email-service"
