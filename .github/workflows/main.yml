@@ -20,16 +20,16 @@ jobs:
           java-version: '21'
 
       - name: Dar permissão ao mvnw
-        # working-directory: books
+        working-directory: email-service
         run: chmod +x mvnw
 
       - name: Build com Maven
-        # working-directory: books
+        working-directory: email-service
         run: ./mvnw clean package -DskipTests
         # run: ./mvnw clean package
 
       - name: Compactar pasta api
-        run: tar -cvf email-service.tar /
+        run: tar -cvf email-service.tar email-service/
 
       - name: Instalar sshpass
         run: sudo apt-get install -y sshpass
