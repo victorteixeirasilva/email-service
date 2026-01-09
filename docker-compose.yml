@@ -3,8 +3,8 @@ services:
     build:
       context: .
     container_name: email-service
-#    ports:
-#      - "8092:8092"
+    ports:
+      - "8092:8092"
     networks:
       - backend
 
